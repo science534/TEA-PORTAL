@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PORTAL TEA</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Orbitron',sans-serif;
+}
+
+body{
+background:radial-gradient(circle at top,#1a0033,#000814);
+color:white;
+overflow:hidden;
+}
+
+/* ================= GERBANG ================= */
+
+#gate{
+position:fixed;
+width:100%;
+height:100vh;
+background:#000814;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:9999;
+padding:20px;
+}
+
+.gate-box{
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.1);
+padding:25px;
+border-radius:20px;
+width:100%;
+max-width:400px;
+box-shadow:0 0 20px #a020f0;
+}
+
+.gate-box h2{
+color:#c66bff;
+margin-bottom:15px;
+}
+
+.gate-box p{
+font-size:14px;
+opacity:0.8;
+margin-bottom:20px;
+}
+
+.gate-box button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:linear-gradient(90deg,#a020f0,#ff6600);
+color:white;
+font-weight:bold;
+cursor:pointer;
+opacity:0.5;
+}
+
+.gate-box button.active{
+opacity:1;
+}
+
+/* ================= LOADING ================= */
+
+#loading{
+position:fixed;
+width:100%;
+height:100vh;
+background:#000814;
+display:none;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+.logo{
+font-size:55px;
+font-weight:900;
+background:linear-gradient(90deg,#ffffff,#c66bff);
+-webkit-background-clip:text;
+color:transparent;
+text-shadow:0 0 20px #c66bff;
+}
+
+.loading-text{
+margin-top:20px;
+color:#ff6600;
+letter-spacing:4px;
+}
+
+/* ================= MAIN ================= */
+
+#main{
+display:none;
+padding:20px;
+overflow-y:auto;
+height:100vh;
+}
+
+.header{
+text-align:center;
+margin-top:20px;
+}
+
+.header h1{
+font-size:38px;
+background:linear-gradient(90deg,#ffffff,#c66bff);
+-webkit-background-clip:text;
+color:transparent;
+}
+
+.status{
+margin-top:10px;
+color:#00ff88;
+font-size:14px;
+}
+
+.time{
+margin-top:5px;
+color:#ff6600;
+font-size:13px;
+}
+
+.search{
+margin-top:25px;
+}
+
+.search input{
+width:100%;
+padding:12px;
+border-radius:12px;
+border:1px solid rgba(255,255,255,0.1);
+background:rgba(255,255,255,0.05);
+color:white;
+}
+
+.cards{
+margin-top:25px;
+display:grid;
+gap:18px;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.08);
+padding:18px;
+border-radius:18px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.03);
+box-shadow:0 0 15px #a020f0;
+}
+
+.card h3{
+color:#ff6600;
+margin-bottom:5px;
+}
+
+.card p{
+font-size:13px;
+opacity:0.7;
+}
+
+/* ================= TRANSITION ================= */
+
+#transition{
+position:fixed;
+width:100%;
+height:100vh;
+background:#000814;
+display:none;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+z-index:9999;
+}
+
+.spinner{
+border:4px solid rgba(255,255,255,0.1);
+border-top:4px solid #a020f0;
+border-radius:50%;
+width:50px;
+height:50px;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+100%{transform:rotate(360deg);}
+}
+
+.footer{
+text-align:center;
+margin-top:30px;
+font-size:12px;
+opacity:0.5;
+}
+
+</style>
+</head>
+<body>
+
+<!-- GERBANG -->
+<div id="gate">
+<div class="gate-box">
+<h2>GERBANG MASUK</h2>
+<p>Sistem telah diperbarui. Harap setujui sebelum masuk ke PORTAL TEA.</p>
+
+<label>
+<input type="checkbox" id="agree">
+ Saya Paham & Siap Masuk
+</label>
+
+<button id="enterBtn">TUNGGU PERSETUJUAN</button>
+</div>
+</div>
+
+<!-- LOADING -->
+<div id="loading">
+<div class="logo">TEA</div>
+<div class="loading-text">MEMBUKA SISTEM...</div>
+</div>
+
+<!-- TRANSITION -->
+<div id="transition">
+<div class="logo" style="font-size:30px;">PORTAL TEA</div>
+<div class="spinner"></div>
+<div class="loading-text">MEMUAT HALAMAN...</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+<div class="header">
+<h1>PORTAL TEA</h1>
+<div class="status">● Semua Sistem Online</div>
+<div class="time" id="time"></div>
+</div>
+
+<div class="search">
+<input type="text" id="searchInput" placeholder="Cari menu akses...">
+</div>
+
+<div class="cards">
+
+<div class="card" onclick="openLink('https://chat.whatsapp.com/DHndTt4hJqp202DaJmVyiv?mode=gi_t')">
+<h3>Grup Gen 1</h3>
+<p>Gabung komunitas generasi pertama.</p>
+</div>
+
+<div class="card" onclick="openLink('https://chat.whatsapp.com/LsO2nHPF4KgDHpXIMgKE87?mode=gi_t')">
+<h3>Grup Gen 2</h3>
+<p>Gabung komunitas generasi kedua.</p>
+</div>
+
+<div class="card" onclick="openLink('https://whatsapp.com/channel/0029VbCJpDK5kg7Fu8lsAI0Q')">
+<h3>Saluran WhatsApp</h3>
+<p>Ikuti saluran resmi TEA.</p>
+</div>
+
+<div class="card" onclick="openLink('https://science534.github.io/TEA-WEB/')">
+<h3>Ensiklopedia 1</h3>
+<p>Dokumentasi utama.</p>
+</div>
+
+<div class="card" onclick="openLink('https://science534.github.io/TEA-WEB2/')">
+<h3>Ensiklopedia 2</h3>
+<p>Data ilmiah lanjutan.</p>
+</div>
+
+<div class="card" onclick="openLink('https://tea-formulir.vercel.app/')">
+<h3>Pendaftaran</h3>
+<p>Form resmi anggota.</p>
+</div>
+
+<div class="card" onclick="openLink('https://science534.github.io/TEA-CALCULATORE/')">
+<h3>Calculator Sains</h3>
+<p>Alat hitung ilmiah.</p>
+</div>
+
+<div class="card" onclick="openLink('https://science534.github.io/ASTROSEARCH-TEA/')">
+<h3>AstroSearch</h3>
+<p>Mesin pencarian astronomi.</p>
+</div>
+
+</div>
+
+<div class="footer">
+by science
+</div>
+
+</div>
+
+<script>
+
+// waktu realtime
+setInterval(()=>{
+const now=new Date();
+document.getElementById("time").innerText=
+now.toLocaleTimeString()+" // TEA-TIME";
+},1000);
+
+// persetujuan
+const agree=document.getElementById("agree");
+const btn=document.getElementById("enterBtn");
+
+agree.addEventListener("change",()=>{
+if(agree.checked){
+btn.classList.add("active");
+btn.innerText="MASUK PORTAL";
+}else{
+btn.classList.remove("active");
+btn.innerText="TUNGGU PERSETUJUAN";
+}
+});
+
+btn.addEventListener("click",()=>{
+if(!agree.checked) return;
+
+document.getElementById("gate").style.display="none";
+document.getElementById("loading").style.display="flex";
+
+setTimeout(()=>{
+document.getElementById("loading").style.display="none";
+document.getElementById("main").style.display="block";
+document.body.style.overflow="auto";
+},2500);
+});
+
+// search
+document.getElementById("searchInput").addEventListener("keyup",function(){
+let filter=this.value.toLowerCase();
+let cards=document.querySelectorAll(".card");
+cards.forEach(card=>{
+let text=card.innerText.toLowerCase();
+card.style.display=text.includes(filter)?"block":"none";
+});
+});
+
+// loading buka link
+function openLink(url){
+document.getElementById("transition").style.display="flex";
+setTimeout(()=>{
+window.location.href=url;
+},1500);
+}
+
+</script>
+
+</body>
+</html>
